@@ -11,69 +11,247 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: #111;
+            color: #222;
         }
 
         header {
             display: flex;
             justify-content: space-between;
-            padding: 15px 8%;
-            background: #111;
-            color: #fff;
+            align-items: center;
+            padding: 18px 8%;
+            background: rgba(17, 17, 17, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(14px);
+            animation: slideDown 0.8s ease;
+        }
+
+        header h2 {
+            letter-spacing: 2px;
         }
 
         nav a {
-            margin-left: 20px;
+            margin-left: 24px;
             color: #fff;
             text-decoration: none;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 100%;
+            height: 2px;
+            background: #fff;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd9e6;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            transform: scaleX(1);
         }
 
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 45%, #9f8cff 100%);
             color: #fff;
             text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: none;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 30%),
+                        radial-gradient(circle at bottom right, rgba(255,255,255,0.12), transparent 30%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 5vw, 4.8rem);
+            letter-spacing: 0.08em;
+            max-width: 860px;
+            animation: floatIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        .hero p {
+            margin-top: 16px;
+            font-size: 1.1rem;
+            opacity: 0;
+            animation: fadeInUp 0.9s ease 0.35s forwards;
+        }
+
+        .hero .btn {
+            margin-top: 30px;
+            padding: 14px 30px;
             background: #fff;
-            color: #333;
-            cursor: pointer;
-            border-radius: 50px;
+            color: #111;
+            font-weight: 700;
+            border-radius: 999px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.16);
+            transform: translateY(10px);
+            animation: fadeInUp 0.9s ease 0.5s forwards;
+        }
+
+        .hero .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
         }
 
         .section {
-            padding: 60px 8%;
             display: none;
+            padding: 70px 8%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 18px;
+            color: #fff;
         }
 
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
         }
 
         .card {
-            border: 1px solid #ddd;
-            padding: 10px;
+            overflow: hidden;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 18px;
             text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card img {
             width: 100%;
-            height: 200px;
+            height: 230px;
             object-fit: cover;
+            border-radius: 18px;
         }
 
-        .show {
-            display: block
+        .card h3 {
+            margin: 18px 0 8px;
+            color: #fff;
+        }
+
+        .card p {
+            color: #ffd9e6;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .card button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.95);
+            cursor: pointer;
+            color: #111;
+            font-weight: 700;
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        .card button:hover {
+            transform: translateY(-3px);
+            background: #fff;
+        }
+
+        .toast {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            background: rgba(17,17,17,0.95);
+            color: #fff;
+            padding: 16px 20px;
+            border-radius: 18px;
+            box-shadow: 0 22px 60px rgba(0,0,0,0.35);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(32px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 720px) {
+            header {
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px 6%;
+            }
+
+            .hero {
+                padding: 80px 20px;
+            }
+
+            .section {
+                padding: 50px 6%;
+            }
         }
     </style>
 </head>
@@ -83,8 +261,8 @@
     <header>
         <h2>StyleStore</h2>
         <nav>
-            <a href="#" onclick="showHome()">Home</a>
-            <a href="#" onclick="showProducts()">Shop</a>
+            <a href="#" data-target="home">Home</a>
+            <a href="#" data-target="products">Shop</a>
         </nav>
     </header>
 
@@ -92,7 +270,7 @@
     <section class="hero" id="home">
         <h1>Shop Fashion & Makeup</h1>
         <p>Trendy styles just for you</p>
-        <button border-radius="5px" class="btn" onclick="showProducts()">Shop Now</button>
+        <button class="btn" onclick="showProducts()">Shop Now</button>
     </section>
 
     <!-- PRODUCTS -->
@@ -105,39 +283,101 @@
                 <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
                 <h3>Leather Jacket</h3>
                 <p>₹999</p>
+                <button onclick="addToBag('Leather Jacket')">Add to Bag</button>
             </div>
 
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f">
                 <h3>Top Wear</h3>
                 <p>₹799</p>
+                <button onclick="addToBag('Top Wear')">Add to Bag</button>
             </div>
 
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9">
                 <h3>Makeup Kit</h3>
                 <p>₹699</p>
+                <button onclick="addToBag('Makeup Kit')">Add to Bag</button>
             </div>
 
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad">
                 <h3>Fragrance</h3>
                 <p>₹299</p>
+                <button onclick="addToBag('Fragrance')">Add to Bag</button>
             </div>
 
         </div>
     </section>
 
+    <div class="toast" id="toast"></div>
+
     <script>
+        const homeSection = document.getElementById('home');
+        const productsSection = document.getElementById('products');
+        const navLinks = document.querySelectorAll('nav a');
+        const cards = document.querySelectorAll('.card');
+        const toast = document.getElementById('toast');
+
+        function setActiveLink(section) {
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.target === section);
+            });
+        }
+
         function showProducts() {
-            document.getElementById('home').style.display = 'none';
-            document.getElementById('products').classList.add('show');
+            homeSection.style.display = 'none';
+            productsSection.classList.add('show');
+            setActiveLink('products');
+            revealCards();
         }
 
         function showHome() {
-            document.getElementById('home').style.display = 'flex';
-            document.getElementById('products').classList.remove('show');
+            homeSection.style.display = 'flex';
+            productsSection.classList.remove('show');
+            setActiveLink('home');
         }
+
+        function addToBag(name) {
+            toast.textContent = `${name} added to your bag!`; 
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2600);
+        }
+
+        function revealCards() {
+            cards.forEach((card, index) => {
+                setTimeout(() => card.classList.add('visible'), index * 120);
+            });
+        }
+
+        function initScrollReveal() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15,
+            });
+
+            document.querySelectorAll('.section, .card').forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        document.querySelectorAll('a[data-target]').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.currentTarget.dataset.target;
+                if (target === 'home') showHome();
+                if (target === 'products') showProducts();
+            });
+        });
+
+        initScrollReveal();
+        setActiveLink('home');
     </script>
 
 </body>
